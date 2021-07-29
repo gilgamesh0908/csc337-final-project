@@ -6,7 +6,6 @@ To start the server, you need:
 * npm install cookie-parser
 * npm install multer
 * npm install crypto
-Then,
 * node server.js
 
 # 1. Overview
