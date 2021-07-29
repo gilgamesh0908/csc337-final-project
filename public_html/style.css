@@ -10,3 +10,20 @@ body{
     left: 80%;
     top: 10px
 }
+
+#searchArea{
+    position: relative;
+    left: 10%;
+}
+
+#jobList{
+    position: relative;
+    left: 5%
+}
+
+#compList{
+    position: relative;
+    left: 80%;
+    top: 0px
+    /* todo: adjust the top val */
+}
