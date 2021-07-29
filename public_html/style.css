@@ -1,0 +1,12 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    background-color: lightblue;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#buttons{
+    position: relative;
+    left: 80%;
+    top: 10px
+}
