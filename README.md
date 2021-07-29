@@ -1,13 +1,13 @@
 # csc337-final-project
 # NOTE:
 To start the server, you need:
-```npm install express```
-```npm install mongoose```
-```npm install cookie-parser```
-```npm install multer```
-```npm install crypto```
+npm install express
+npm install mongoose
+npm install cookie-parser
+npm install multer
+npm install crypto
 Then,
-```node server.js```
+node server.js
 ----
 
 # 1. Overview
