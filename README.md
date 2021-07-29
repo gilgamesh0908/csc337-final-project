@@ -1,6 +1,6 @@
 # csc337-final-project
 # NOTE:
-To start the server, you need:
+To start the server, you need://
 ```npm install express```
 ```npm install mongoose```
 ```npm install cookie-parser```
