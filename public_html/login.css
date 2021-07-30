@@ -1,0 +1,40 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.main{
+    margin-top: 7%;
+    margin-left: 7%;
+    margin-right: 7%;
+    background-color: lightgray;
+}
+.front{
+    position: fixed;
+    right: 5%;
+    top:5%
+}
+.left{
+    position: fixed;
+    background-color:white;
+    text-align: center;
+    padding: 10px;
+    height: 85%;
+    width: 30%;
+    left:15%;
+    top:20%;
+    bottom: 20%;
+    border: 2px solid black;
+}
+.right{
+    position: fixed;
+    background-color: white;
+    text-align: center;
+    padding: 10px;
+    height: 85%;
+    right:15%;
+    width: 30%;
+    top:20%;
+    bottom: 20%;
+    border: 2px solid black;
+}
