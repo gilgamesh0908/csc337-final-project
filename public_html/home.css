@@ -1,0 +1,26 @@
+.front{
+    position: fixed;
+    right: 5%;
+    top:5%
+}
+.opColumn{
+    position: fixed;
+    margin-top: 10%;
+    height: 65%;
+    width:225px;
+    left: 5%;
+    background-color: lightgray;
+    text-align: center;
+}
+#first{
+    position: relative;
+    margin-top: 30%;
+   
+   
+}
+#second{
+    position:relative;
+    margin-top: 30%;
+
+   
+}
