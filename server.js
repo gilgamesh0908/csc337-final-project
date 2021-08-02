@@ -67,17 +67,28 @@ setInterval(updateSessions, 2000); //change later
 app.use(cookieParser());
 app.use('/', express.static('public_html'));
 app.use('/user.html', authenticate); // not sure
-app.get('/job', (req, res) => {
-
+app.get('/job/search/:companyName', (req, res) => {
+    res.setHeader('Content-Type', 'text/plain');
+    let keyword = new RegExp(decodeURIComponent(req.params.companyName));
+    Job.find({compName: keyword}).exec(function(error, results){
+        res.send(JSON.stringify(results));
+    })
 });
-app.get('/job/search', (req, res) => {
-
-});
-app.post('/job/apply', (req, res) => {
-
-});
-app.get('/login', (req, res) => {
-
+app.post('/job/apply/:comp/:uname', (req, res) => {
+    let jobObj = req.body;
+    var j = mongoose.model('Job', JobSchema);
+    var r = mongoose.model('Resume', ResumeSchema);
+    j.find({compName: comp}).exec(function(error, results){
+        if(results.length == 0){
+            console.log("the user doesn't exist");
+        }else{
+            var resume = new Resume();
+            let job = results[0];
+            job.resumeList.push(resume);
+            job.save();
+            console.log("finish adding the resume into the job list");
+        }
+    })
 });
 app.get('/login/logIn/:username/:password', (req, res) => {
     let u = req.params.username;
@@ -123,9 +134,10 @@ app.post('/login/create/:username/:password/:email', (req, res) => {
         }
     });
 });
-app.get('/home', (req, res) => {
-
+app.post('/add/job', (req, res) => {
+    
 });
+//todo: continue here
 app.post('/home/create', (req, res) => {
 
 });
