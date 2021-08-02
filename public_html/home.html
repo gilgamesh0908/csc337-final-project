@@ -4,13 +4,13 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="home.js"></script>
     <script src="jquery.js"></script>
-    <title>Job</title>
+    <title>Home</title>
 </head>
 <body>
     <div id="buttons">
-        <input type="button" value="Job" onclick=""></input>
-        <input type="button" value="Home" onclick=""></input>
-        <input type="button" value="Login" onclick=""></input>
+        <input type="button" value="Job" onclick="window.location.href='index.html'"></input>
+        <input type="button" value="Home" onclick="window.location.href='home.html'"></input>
+        <input type="button" value="Login" onclick="window.location.href='login.html'"></input>
     </div>
 
     <div id="opColumn">
@@ -18,7 +18,36 @@
         <input type="button" value="View the resume" onclick=""></input>
     </div>
 
-    <div id="resumeArea">
+    <div id="createResumeArea">
+        <label for="name">Name</label>
+        <input id="name" type="text"></input>
+    </br></br>
+        <label for="gender">Gender</label>
+        <input type="radio" id="gender" value="male">Male</input>
+        <input type="radio" id="gender" value="female">Female</input>
+    </br></br>
+        <label for="pNum">Phone number</label>
+        <input id="pNum" type="tel"></input>
+    </br></br>
+        <label for="photo">Upload photo</label>
+        <input id="photo" type="file"></input>
+    </br></br>
+        <label for="eduBkg">Education background</label>
+        <input type="radio" id="eduBkg" value="undergrad">Undergraduate</input>
+        <input type="radio" id="eduBkg" value="highS">High School</input>
+    </br></br>
+        <label for="birthday">Birthday</label>
+        <input id="birthday" type="date"></input>
+    </br></br>
+        <label for="area">Interested Area</label>
+        <input id="area" type="text"></input>
+    </br></br>
+        <label for="desc">Description</label>
+        <input id="desc" type="text"></input>
+
+    </div>
+
+    <div id="viewResumeArea" hidden>
 
     </div>
 
