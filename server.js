@@ -135,11 +135,22 @@ app.post('/login/create/:username/:password/:email', (req, res) => {
     });
 });
 app.post('/add/job', (req, res) => {
-    
+    //todo: continue here (addJob.html, addJob.js)
+    let jobObj = req.body;
+    var j = mongoose.model('Job', JobSchema);
+    j.find({jobTitle: jobObj.jTitle, compName: jobObj.compName}).exec(function(error, results){
+        if(results.length == 0){ // if doesn't exist
+            var job = new Job(jobObj);
+            job.save(function(err) {if(err) console.log('fail to add');});
+            console.log("finish adding the job");
+        }
+    })
 });
 //todo: continue here
 app.post('/home/create', (req, res) => {
-
+    let resumeObj = req.body;
+    var r = mongoose.model('Resume', ResumeSchema);
+    r.find({})
 });
 app.get('/home/view', (req,res) => {
 
