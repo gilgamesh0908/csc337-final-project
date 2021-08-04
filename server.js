@@ -34,7 +34,7 @@ var User = mongoose.model('User', UserSchema);
 var Resume = mongoose.model('Resume', ResumeSchema);
 var Job = mongoose.model('Job', JobSchema);
 
-mongoose.connection(mongoDBURL, { useNewUrlParser: true });
+mongoose.connect(mongoDBURL, { useNewUrlParser: true });
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 function authenticate(req, res, next) {
@@ -134,8 +134,18 @@ app.post('/login/create/:username/:password/:email', (req, res) => {
         }
     });
 });
+//todo: continue here
+app.post('/home/create', (req, res) => {
+    let resumeObj = req.body;
+    var r = mongoose.model('Resume', ResumeSchema);
+    r.find({})
+});
+app.get('/home/view', (req,res) => {
+
+});
+
+// ----below url could check/add the data----
 app.post('/add/job', (req, res) => {
-    //todo: continue here (addJob.html, addJob.js)
     let jobObj = req.body;
     var j = mongoose.model('Job', JobSchema);
     j.find({jobTitle: jobObj.jTitle, compName: jobObj.compName}).exec(function(error, results){
@@ -146,14 +156,26 @@ app.post('/add/job', (req, res) => {
         }
     })
 });
-//todo: continue here
-app.post('/home/create', (req, res) => {
-    let resumeObj = req.body;
-    var r = mongoose.model('Resume', ResumeSchema);
-    r.find({})
+app.get('/get/users', (req, res) => {
+    res.setHeader('Content-Type', 'text/plain');
+    var u = mongoose.model('User', UserSchema);
+    u.find({}).exec(function(error, results){
+        res.send(JSON.stringify(results, null, 4));
+    });
 });
-app.get('/home/view', (req,res) => {
-
+app.get('/get/jobs', (req, res) => {
+    res.setHeader('Content-Type', 'text/plain');
+    var j = mongoose.model('Job', UserSchema);
+    j.find({}).exec(function(error, results){
+        res.send(JSON.stringify(results, null, 4));
+    });
+});
+app.get('/get/resume', (req, res) => {
+    res.setHeader('Content-Type', 'text/plain');
+    var r = mongoose.model('Resume', UserSchema);
+    r.find({}).exec(function(error, results){
+        res.send(JSON.stringify(results, null, 4));
+    });
 });
 
 
