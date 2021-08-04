@@ -165,14 +165,14 @@ app.get('/get/users', (req, res) => {
 });
 app.get('/get/jobs', (req, res) => {
     res.setHeader('Content-Type', 'text/plain');
-    var j = mongoose.model('Job', UserSchema);
+    var j = mongoose.model('Job', JobSchema);
     j.find({}).exec(function(error, results){
         res.send(JSON.stringify(results, null, 4));
     });
 });
 app.get('/get/resume', (req, res) => {
     res.setHeader('Content-Type', 'text/plain');
-    var r = mongoose.model('Resume', UserSchema);
+    var r = mongoose.model('Resume', ResumeSchema);
     r.find({}).exec(function(error, results){
         res.send(JSON.stringify(results, null, 4));
     });
