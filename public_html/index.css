@@ -1,0 +1,58 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    background-color: rgb(236, 233, 233);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.front{
+    position: fixed;
+    right: 5%;
+    top:5%
+}
+
+#searchArea{
+    position: relative;
+    margin-left: 10%;
+    margin-top: 7%;
+    height: 50px;
+    width: 800px;
+    
+}
+.button{
+    background-color:rgb(223, 223, 223);
+    color: black;
+}
+
+#jobList{
+    position: absolute;
+    margin-left: 10%;
+    margin-top: 20px;
+    width:50%;
+    border: 1px solid black;
+}
+
+#compList{
+    position: absolute;
+    left: 75%;
+    width: 13%;
+    background-color: white;
+    height: 75%;
+    
+}
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 200px;
+}
+li a{
+    display: block;
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+li a:hover{
+    background-color:lightgray;
+    color: white;
+}
