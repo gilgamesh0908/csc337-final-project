@@ -20,10 +20,6 @@ function create(){
   let nusername = $('#username').val();
   let npassword1 = $('#password1').val();
   let npassword2 = $('#password2').val();
-  if (npassword1 != npassword2){
-    alert("Two entered passwords do not match!");
-    return;
-  }
   let newuser ={email:nemail, username:nusername,password1:npassword1,password2:npassword2}
   let userobj = JSON.stringify(newuser);
   $.ajax({
@@ -31,12 +27,18 @@ function create(){
     data: {newuser: userobj},
     method: 'POST',
     success: function(result) {
-        if (result == 'account created') {
+      if (npassword1 != npassword2){
+        alert("Two entered passwords do not match!");
+      }else{
+          if (result == 'account created') {
             alert('Account created!');
-        }
-        else {
+          }
+          else {
             alert('Username is taken, please try an another one!');
-        }
+          }
+
+      }
+        
     }
 })
 }
