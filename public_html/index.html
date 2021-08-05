@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="job.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script src="index.js"></script>
     <script src="jquery.js"></script>
     <title>Job</title>
 </head>
 <body>
-    <div id="buttons">
-        <input type="button" value="Job" onclick="window.location.href='index.html'"></input>
-        <input type="button" value="Home" onclick="window.location.href='home.html'"></input>
-        <input type="button" value="Login" onclick="window.location.href='login.html'"></input>
+    <div class="front">
+        <div id="buttons">
+            <input type="button" value="Job" onclick="window.location.href='index.html'"></input>
+            <input type="button" value="Home" onclick="window.location.href='home.html'"></input>
+            <input type="button" value="Login" onclick="window.location.href='login.html'"></input>
+        </div>
     </div>
-
     <div id="searchArea">
-        <input type="text" id="companyName"></input>
-        <input type="button" value="Search" onclick=""></input>
+            <input type="text" name="searchbar" style="height: 18px; width:50% ;"></input>
+            <input type="button" value="Search" onclick="search()"></input>
     </div>
-    
+    <div class="main">
     <div id="jobList">
         <ul>
             <li>
@@ -32,9 +33,11 @@
 
     <div id="compList">
         <ul>
-            <li>Google</li>
-            <li>Firefox</li>
+            <li><a onclick="" >Apple</a></li>
+            <li><a onclick="">Google</a></li>
+            <li><a onclick="">Firefox</a></li>
         </ul>
     </div>
+</div>
 </body>
 </html>

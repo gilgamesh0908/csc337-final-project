@@ -3,24 +3,33 @@
     right: 5%;
     top:5%
 }
-.opColumn{
+body{
+    background-color: rgb(236, 233, 233);
+}
+#opColumn{
     position: fixed;
-    margin-top: 10%;
-    height: 65%;
-    width:225px;
-    left: 5%;
     background-color: lightgray;
+    left: 5%;
+    padding-top: 100px;
+    top:10%;
     text-align: center;
+    height: 70%;
+    width: 15%;
 }
-#first{
-    position: relative;
-    margin-top: 30%;
-   
-   
-}
-#second{
-    position:relative;
-    margin-top: 30%;
 
-   
+
+#createResumeArea{
+    position: fixed;
+    left: 25%;
+    top:10%;
+    background-color: white;
+    height: 80%;
+    width: 50%;
+    padding-top: 20px;
+    border: 1px solid black;
+    margin-left: 15px;
+
+}
+button{
+    margin-left: 2%;
 }
