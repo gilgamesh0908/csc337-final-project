@@ -9,8 +9,9 @@ function addpost(){
     let ubirthday = $('#birthday').val();
     let uarea = $('#area').val();
     let udesc =$('#desc').val();
-    //let newpost = {name:uname,gender:ugender,pNum:upNum,bkg:ubkg,birthday:ubirthday,area:uarea,desc:udesc}
+    let newpost = {name:uname,gender:ugender,pNum:upNum,bkg:ubkg,birthday:ubirthday,area:uarea,desc:udesc}
     let postObj = JSON.stringify(newpost);
+    console.log(postObj);
     $.ajax({
         url: '/home/create',
         data: {newpost:postObj},
@@ -24,4 +25,34 @@ function addpost(){
             }
         }
     })
+}
+
+function addPostBk(){
+    let n = $('#name').val();
+    let g = $('#gend').val();
+    let p = $('#pNum').val();
+    let ph = $('#photo').val();
+    let e = $('#Bkg').val();
+    let b = $('#birthday').val();
+    let a = $('#area').val();
+    let d = $('#desc').val();
+    // console.log(n, g, p, ph, e, b, a, d);
+    $.ajax({
+        url: '/home/create/',
+        data: {
+            username: '',
+            name: n,
+            gender: g,
+            phoneNum: p,
+            photo: ph,
+            education: e,
+            birthday: b,
+            area: a,
+            desc: d
+        },
+        method: 'POST',
+        success: function(result){
+            alert('resume added');
+        }
+    });
 }
