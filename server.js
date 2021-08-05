@@ -34,7 +34,7 @@ var User = mongoose.model('User', UserSchema);
 var Resume = mongoose.model('Resume', ResumeSchema);
 var Job = mongoose.model('Job', JobSchema);
 
-mongoose.connection(mongoDBURL, { useNewUrlParser: true });
+mongoose.connect(mongoDBURL, { useNewUrlParser: true });
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 function authenticate(req, res, next) {
