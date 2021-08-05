@@ -15,30 +15,53 @@ function login(){
     });
 }
 
+// function create(){
+//   let nemail = $('#email').val();
+//   let nusername = $('#username').val();
+//   let npassword1 = $('#password1').val();
+//   let npassword2 = $('#password2').val();
+//   let newuser ={email:nemail, username:nusername,password1:npassword1,password2:npassword2}
+//   let userobj = JSON.stringify(newuser);
+//   $.ajax({
+//     url: '/login/create/'+username+'/'+npassword1+'/'+nemail,
+//     data: {newuser: userobj},
+//     method: 'POST',
+//     success: function(result) {
+//       if (npassword1 != npassword2){
+//         alert("Two entered passwords do not match!");
+//       }else{
+//           if (result == 'account created') {
+//             alert('Account created!');
+//           }
+//           else {
+//             alert('Username is taken, please try an another one!');
+//           }
+
+//       }
+//     }
+// })
+// }
+
 function create(){
   let nemail = $('#email').val();
   let nusername = $('#username').val();
   let npassword1 = $('#password1').val();
   let npassword2 = $('#password2').val();
-  let newuser ={email:nemail, username:nusername,password1:npassword1,password2:npassword2}
-  let userobj = JSON.stringify(newuser);
-  $.ajax({
-    url: '/login/create/'+username+'/'+password+'/'+nemail,
-    data: {newuser: userobj},
-    method: 'POST',
-    success: function(result) {
-      if (npassword1 != npassword2){
-        alert("Two entered passwords do not match!");
-      }else{
-          if (result == 'account created') {
-            alert('Account created!');
-          }
-          else {
-            alert('Username is taken, please try an another one!');
-          }
 
-      }
-        
+  if(npassword1 != npassword2){
+    alert("Two passwords don't match");
+  }
+
+  $.ajax({
+    url: '/login/create/',
+    data:{
+      username: nusername,
+      email: nemail,
+      password: npassword1
+    },
+    method: 'POST',
+    success: function(result){
+      alter('user added!');
     }
-})
+  });
 }
