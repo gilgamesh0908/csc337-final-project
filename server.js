@@ -51,6 +51,7 @@ const mongoDBURL = 'mongodb://localhost:27017/job'; // the name of the collectio
 const iterations = 1000;
 
 var sessionKeys = {};
+var nameList = [];
 
 var Schema = mongoose.Schema;
 var UserSchema = new Schema({
@@ -224,7 +225,11 @@ app.post('/job/apply/:comp/:uname', (req, res) => {
         }
     })
 });
-app.get('/login/login/:username/:password', (req, res) => {
+// <<<<<<< FelicityMeng-patch-1
+// app.get('/login/login/:username/:password', (req, res) => {
+// =======
+// if has an account, login
+app.get('/login/logIn/:username/:password', (req, res) => {
     let u = req.params.username;
     User.find({username: u}).exec(function(error, results){
         if(results.length == 1){ // there's no more than one account
@@ -237,7 +242,11 @@ app.get('/login/login/:username/:password', (req, res) => {
                 if(results[0].hash == hashStr){
                     let sessionkey = Math.floor(Math.random() * 1000);
                     sessionKeys[u] = [sessionkey, Date.now()];
-                    res.cookie("username", `${u}`, {maxAge: 1000*60*60*60});
+// <<<<<<< FelicityMeng-patch-1
+//                     res.cookie("username", `${u}`, {maxAge: 1000*60*60*60});
+// =======
+                    nameList.push(u);
+                    res.cookie("login", {username: u, key: sessionkey}, {maxAge: 20000});
                     res.send("succeed");
                 }else{
                     res.send("fail");
@@ -248,17 +257,29 @@ app.get('/login/login/:username/:password', (req, res) => {
         }
     });
 });
-app.post('/login/create/:username/:password/:email', (req, res) => {
-    let u = req.params.username;
-    let e = req.params.email;
+// <<<<<<< FelicityMeng-patch-1
+// app.post('/login/create/:username/:password/:email', (req, res) => {
+//     let u = req.params.username;
+//     let e = req.params.email;
+// =======
+// create the account [DONE, success to create the account]
+app.post('/login/create/', (req, res) => {
+    // console.log(req.body);
+    let u = req.body.username;
+    let e = req.body.email;
     User.find({username: u}).exec(function(error, results){
         if(results.length == 0){ // if the username doesn't exist
-            let p = req.params.password;
+            let p = req.body.password;
+            // console.log(p);
             var salt = crypto.randomBytes(64).toString('base64');
             crypto.pbkdf2(p, salt, iterations, 64, 'sha512', (err, hash) => {
                 if (err) throw err;
                 let hashStr = hash.toString('base64');
-                console.log(hashStr);
+// <<<<<<< FelicityMeng-patch-1
+//                 console.log(hashStr);
+// =======
+                // console.log(hashStr);
+                // console.log(u);
                 var user = new User({'username': u, 'salt': salt, 'hash': hashStr, 'email': e});
                 user.save(function (err) {if (err) console.log('an error occurred'); });
                 res.send('account created');
@@ -268,6 +289,44 @@ app.post('/login/create/:username/:password/:email', (req, res) => {
         }
     });
 });
+// <<<<<<< FelicityMeng-patch-1
+// =======
+//todo: continue here
+// create the resume
+app.post('/home/create/', (req, res) => {
+    req.params.username = nameList[0];
+    console.log(req.params.username);
+    if(req.params.username == undefined){
+        res.send("Please log in");
+    }else{
+        // console.log('here');
+        // console.log(req.body);
+        let resumeObj = req.body;
+        req.body.username = req.params.username;
+        // console.log(req.body);
+        // console.log(resumeObj);
+        var r = mongoose.model('Resume', ResumeSchema);
+
+        // use name & username to check whether already existed
+        r.find({name: resumeObj.name, username: req.params.username}).exec(function(error, results){
+            if(results.length == 0){ // if the resume doesnt exist
+                var resume = new Resume(resumeObj);
+                resume.save(function(err) {if(err) console.log('fail to add');});
+                console.log('finish to add the resume into database');
+            }else{
+                // console.log('you already have the resume');
+                res.send("exist");
+            }
+        });
+    }
+});
+// view the resume
+app.get('/home/view', (req,res) => {
+    // find the username and return the data about that username
+});
+
+// ----below url could check/add the data----
+// to add the job into the database
 app.post('/add/job', (req, res) => {
     //todo: continue here (addJob.html, addJob.js)
     let jobObj = req.body;
