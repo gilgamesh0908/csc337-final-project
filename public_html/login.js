@@ -2,11 +2,13 @@ function login(){
   let username = $('#lusername').val();
   let password = $('#lpassword').val();
   $.ajax({
-    url: '/login/'+username+'/'+password,
+    url: '/login/logIn/'+username+'/'+password,
     method:'GET',
     success: function( result ) {
       if (result == "succeed"){
-        $('#loginBox').html('<a href = "home.html">Login in!</a>');
+        // $('#loginBox').html('<a href = "home.html">Login in!</a>');
+        // alert('Success to login');
+        window.location='/home.html';
       }
       else{
         alert('Wrong information, try it again!')
@@ -14,33 +16,6 @@ function login(){
     }
     });
 }
-
-// function create(){
-//   let nemail = $('#email').val();
-//   let nusername = $('#username').val();
-//   let npassword1 = $('#password1').val();
-//   let npassword2 = $('#password2').val();
-//   let newuser ={email:nemail, username:nusername,password1:npassword1,password2:npassword2}
-//   let userobj = JSON.stringify(newuser);
-//   $.ajax({
-//     url: '/login/create/'+username+'/'+npassword1+'/'+nemail,
-//     data: {newuser: userobj},
-//     method: 'POST',
-//     success: function(result) {
-//       if (npassword1 != npassword2){
-//         alert("Two entered passwords do not match!");
-//       }else{
-//           if (result == 'account created') {
-//             alert('Account created!');
-//           }
-//           else {
-//             alert('Username is taken, please try an another one!');
-//           }
-
-//       }
-//     }
-// })
-// }
 
 function create(){
   let nemail = $('#email').val();
@@ -61,7 +36,7 @@ function create(){
     },
     method: 'POST',
     success: function(result){
-      alter('user added!');
+      alert('user added!');
     }
   });
 }
