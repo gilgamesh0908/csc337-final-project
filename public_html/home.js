@@ -1,4 +1,4 @@
-function addpost(){
+function addpost1(){
     let uname = $('#name').val();
     let ugender = $('input[name = gender]:checked', '#createResumeArea').val();
     let upNum = $('#pNum').val();
@@ -11,7 +11,6 @@ function addpost(){
     let udesc =$('#desc').val();
     let newpost = {name:uname,gender:ugender,pNum:upNum,bkg:ubkg,birthday:ubirthday,area:uarea,desc:udesc}
     let postObj = JSON.stringify(newpost);
-    console.log(postObj);
     $.ajax({
         url: '/home/create',
         data: {newpost:postObj},
@@ -26,33 +25,55 @@ function addpost(){
         }
     })
 }
-
-function addPostBk(){
-    let n = $('#name').val();
-    let g = $('#gend').val();
-    let p = $('#pNum').val();
-    let ph = $('#photo').val();
-    let e = $('#Bkg').val();
-    let b = $('#birthday').val();
-    let a = $('#area').val();
-    let d = $('#desc').val();
-    // console.log(n, g, p, ph, e, b, a, d);
-    $.ajax({
-        url: '/home/create/',
-        data: {
-            username: '',
-            name: n,
-            gender: g,
-            phoneNum: p,
-            photo: ph,
-            education: e,
-            birthday: b,
-            area: a,
-            desc: d
-        },
-        method: 'POST',
-        success: function(result){
-            alert('resume added');
-        }
-    });
+function updateUI(){
+	$.ajax({
+    url: '/home/getResume',
+    type: 'POST',
+    cache: false,
+    processData: false,
+    contentType: false
+}).done(function(res) {
+	 
+	 var jsonObj = JSON.parse(res)
+	 console.log(jsonObj);
+	 $('#vimg').attr('src',jsonObj.avatar);
+	 $('#vname').text(jsonObj.name);
+	 $('#vgender').text(jsonObj.gender);
+	 $('#vpNum').text(jsonObj.phoneNum);
+	 $('#veduBkg').text(jsonObj.education);
+	 $('#vbirthday').text(jsonObj.birthday);
+	 $('#varea').text(jsonObj.area);
+	 $('#vdesc').text(jsonObj.desc);
+}).fail(function(res) {
+}); 
 }
+function changeView(w){
+	console.log(w);
+	$('#createResumeArea').hide();
+	$('#viewResumeArea').hide();
+	if(w==1){
+		$('#createResumeArea').show();
+	}else{
+		updateUI()
+		$('#viewResumeArea').show();
+	}
+}
+function addPost(){
+	$.ajax({
+    url: '/home/createResume',
+    type: 'POST',
+    cache: false,
+    data: new FormData($('#uploadForm')[0]),
+    processData: false,
+    contentType: false
+}).done(function(res) {
+	alert(res);
+}).fail(function(res) {
+	alert('Resume posted fail!');
+}); 
+}
+window.onload=function(){
+      changeView(1);
+}
+
+ 
