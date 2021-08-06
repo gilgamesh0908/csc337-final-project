@@ -1,9 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-
 const cookieParser = require('cookie-parser'); //npm install cookie-parser
 const crypto = require('crypto');
+
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false })); 
 
 
 var router = express.Router();
@@ -40,12 +43,6 @@ createFolder(uploadFolder);
 
 var upload = multer({ storage: storage });
  
-
-
-const app = express();
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false })); 
 const db = mongoose.connection;
 const mongoDBURL = 'mongodb://localhost:27017/job'; // the name of the collection is "job"
 const iterations = 1000;
@@ -116,6 +113,18 @@ app.use(cookieParser());
 app.use('/upload', express.static('upload'));
 app.use('/', express.static('public_html'));
 app.use('/user.html', authenticate); // not sure
+app.use('/addJob.html', (req, res) => {
+    let jobObj = req.body;
+    console.log(jobObj);
+    var j = mongoose.model('Job', JobSchema);
+    j.find({jobTitle: jobObj.jTitle, compName: jobObj.compName}).exec(function(error, results){
+        if(results.length == 0){ // if doesn't exist
+            var job = new Job(jobObj);
+            job.save(function(err) {if(err) console.log('fail to add');});
+            console.log("finish adding the job");
+        }
+    })
+ });
 app.get('/job/search/:companyName', (req, res) => {
     res.setHeader('Content-Type', 'text/plain');
     let keyword = new RegExp(decodeURIComponent(req.params.companyName));
@@ -330,7 +339,7 @@ app.get('/home/view', (req,res) => {
 app.post('/add/job', (req, res) => {
     //todo: continue here (addJob.html, addJob.js)
     let jobObj = req.body;
-	
+	console.log(jobObj);
     var j = mongoose.model('Job', JobSchema);
     j.find({jobTitle: jobObj.jTitle, compName: jobObj.compName, jobArea: jobObj.jobArea}).exec(function(error, results){
         if(results.length == 0){ // if doesn't exist
@@ -340,14 +349,29 @@ app.post('/add/job', (req, res) => {
         }
     })
 });
-//todo: continue here
-app.post('/home/create', (req, res) => {
-    let resumeObj = req.body;
-    var r = mongoose.model('Resume', ResumeSchema);
-    r.find({username:resumeObj.username, name:resumeObj.name, phoneNum:resumeObj.pNum,  })
+// to list all the users in the database
+app.get('/get/users', (req, res) => {
+    res.setHeader('Content-Type', 'text/plain');
+    var u = mongoose.model('User', UserSchema);
+    u.find({}).exec(function(error, results){
+        res.send(JSON.stringify(results, null, 4));
+    });
 });
-app.get('/home/view', (req,res) => {
-
+// to list all the jobs in the database
+app.get('/get/jobs', (req, res) => {
+    res.setHeader('Content-Type', 'text/plain');
+    var j = mongoose.model('Job', JobSchema);
+    j.find({}).exec(function(error, results){
+        res.send(JSON.stringify(results, null, 4));
+    });
+});
+// to list all the resume in the database
+app.get('/get/resume', (req, res) => {
+    res.setHeader('Content-Type', 'text/plain');
+    var r = mongoose.model('Resume', ResumeSchema);
+    r.find({}).exec(function(error, results){
+        res.send(JSON.stringify(results, null, 4));
+    });
 });
 
 
