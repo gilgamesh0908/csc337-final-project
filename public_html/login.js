@@ -25,18 +25,18 @@ function create(){
 
   if(npassword1 != npassword2){
     alert("Two passwords don't match");
+  }else{
+    $.ajax({
+      url: '/login/create/',
+      data:{
+        username: nusername,
+        email: nemail,
+        password: npassword1
+      },
+      method: 'POST',
+      success: function(result){
+        alert('user added!');
+      }
+    });
   }
-
-  $.ajax({
-    url: '/login/create/',
-    data:{
-      username: nusername,
-      email: nemail,
-      password: npassword1
-    },
-    method: 'POST',
-    success: function(result){
-      alert('user added!');
-    }
-  });
 }

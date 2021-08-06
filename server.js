@@ -121,7 +121,8 @@ app.use('/addJob.html', (req, res) => {
         if(results.length == 0){ // if doesn't exist
             var job = new Job(jobObj);
             job.save(function(err) {if(err) console.log('fail to add');});
-            console.log("finish adding the job");
+            // console.log("finish adding the job");
+            // res.send('finish adding');
         }
     })
  });
@@ -143,96 +144,27 @@ app.post('/job/searchByTitle/', (req, res) => {
     })
 });
 
-app.post('/home/getResume/', (req, res) => {
-    //res.setHeader('Content-Type', 'text/plain');
-	let username = req.cookies['username'];
-	console.log(username);
-	if(!username){
-		res.send( 'login first!');
-		return;
-	} 
-    Resume.findOne({'username': username}).exec(function(error, results){
-        res.send(JSON.stringify(results));
-    })
-	
-});
-/* POST upload listing. */
-app.post('/home/createResume', upload.single('file'), function(req, res, next) {
-    var file = req.file;
-	let jobObj = req.body;
-	let username = req.cookies['username'];
-	console.log(username);
-	if(!username){
-		res.send( 'login first!');
-		return;
-	}
-	
-	var r = mongoose.model('Resume', ResumeSchema);
-    r.find({username:username}).exec(function(error, results){
-        if(results.length == 0){ // there's no more than one account
-		 
-			 var newResume = new Resume({
-				 'username': username, 
-				 'gender': jobObj.gender, 
-				 'name': jobObj.name, 
-				 'phoneNum': jobObj.pNum, 
-				 'birthday': jobObj.birthday, 
-				 'education': jobObj.Bkg, 
-				 'avatar': file.path, 
-				 'area': jobObj.area, 
-				 'desc': jobObj.desc, 
-			 });
-             newResume.save(function (err) {if (err) console.log('an error occurred'); });
-			 res.send("insertok");
-	   }else{
-		   console.log("update");
-		   Resume.updateOne({
-			'username': username
-		  }, {
-			 'name': jobObj.name, 
-				 'gender': jobObj.gender, 
-				 'phoneNum': jobObj.pNum, 
-				 'birthday': jobObj.birthday, 
-				 'education': jobObj.Bkg, 
-				 'avatar': file.path, 
-				 'area': jobObj.area, 
-				 'desc': jobObj.desc, 
-		  }, (err) => {
-			if (err) {
-				res.send("updatefail");
-			  console.log('updatefail')
-			} else {
-			  res.send("updateok");
-			  
-			}
-		  });
-		  
-        }
-    });
-	
-	console.log(jobObj);
-    console.log('filetype：%s', file.mimetype);
-    console.log('filename：%s', file.originalname);
-    console.log('filesize：%s', file.size);
-    console.log('filepath：%s', file.path);
-  
-    
-});
-app.post('/job/apply/:comp/:uname', (req, res) => {
+app.post('/job/apply', (req, res) => {
     let jobObj = req.body;
+    console.log(jobObj);
+    // var compName = req.params.comp;
+    // console.log(compName);
+    // var jobPos = req.params.pos;
+    // console.log(compName);
+    
     var j = mongoose.model('Job', JobSchema);
     var r = mongoose.model('Resume', ResumeSchema);
-    j.find({compName: comp}).exec(function(error, results){
-        if(results.length == 0){
-            console.log("the user doesn't exist");
-        }else{
-            var resume = new Resume();
-            let job = results[0];
-            job.resumeList.push(resume);
-            job.save();
-            console.log("finish adding the resume into the job list");
-        }
-    })
+    // j.find({compName: comp}).exec(function(error, results){
+    //     if(results.length == 0){
+    //         console.log("the user doesn't exist");
+    //     }else{
+    //         var resume = new Resume();
+    //         let job = results[0];
+    //         job.resumeList.push(resume);
+    //         job.save();
+    //         console.log("finish adding the resume into the job list");
+    //     }
+    // })
 });
 // <<<<<<< FelicityMeng-patch-1
 // app.get('/login/login/:username/:password', (req, res) => {
@@ -302,36 +234,128 @@ app.post('/login/create/', (req, res) => {
 // =======
 //todo: continue here
 // create the resume
-app.post('/home/create/', (req, res) => {
-    req.params.username = nameList[0];
-    console.log(req.params.username);
-    if(req.params.username == undefined){
-        res.send("Please log in");
-    }else{
-        // console.log('here');
-        // console.log(req.body);
-        let resumeObj = req.body;
-        req.body.username = req.params.username;
-        // console.log(req.body);
-        // console.log(resumeObj);
-        var r = mongoose.model('Resume', ResumeSchema);
 
-        // use name & username to check whether already existed
-        r.find({name: resumeObj.name, username: req.params.username}).exec(function(error, results){
-            if(results.length == 0){ // if the resume doesnt exist
-                var resume = new Resume(resumeObj);
-                resume.save(function(err) {if(err) console.log('fail to add');});
-                console.log('finish to add the resume into database');
-            }else{
-                // console.log('you already have the resume');
-                res.send("exist");
-            }
-        });
+// app.post('/home/create/', (req, res) => {
+//     req.params.username = nameList[0];
+//     console.log(req.params.username);
+//     if(req.params.username == undefined){
+//         res.send("Please log in");
+//     }else{
+//         // console.log('here');
+//         // console.log(req.body);
+//         let resumeObj = req.body;
+//         req.body.username = req.params.username;
+//         // console.log(req.body);
+//         // console.log(resumeObj);
+//         var r = mongoose.model('Resume', ResumeSchema);
+
+//         // use name & username to check whether already existed
+//         r.find({name: resumeObj.name, username: req.params.username}).exec(function(error, results){
+//             if(results.length == 0){ // if the resume doesnt exist
+//                 var resume = new Resume(resumeObj);
+//                 resume.save(function(err) {if(err) console.log('fail to add');});
+//                 console.log('finish to add the resume into database');
+//             }else{
+//                 // console.log('you already have the resume');
+//                 res.send("exist");
+//             }
+//         });
+//     }
+// });
+app.post('/home/createResume', upload.single('file'), function(req, res, next) {
+    var file = req.file;
+	let jobObj = req.body;
+	let username = req.cookies['username'];
+    console.log('here');
+    console.log(nameList[0]);
+	console.log(username);
+	if(nameList[0] == undefined){
+		res.send('login first');
+		return;
+	}
+	if(jobObj.name == ''){
+        res.send('no name');
+        return;
     }
+	var r = mongoose.model('Resume', ResumeSchema);
+    r.find({username:username}).exec(function(error, results){
+        if(results.length == 0){ // there's no more than one account
+		 
+			 var newResume = new Resume({
+				 'username': username, 
+				 'gender': jobObj.gender, 
+				 'name': jobObj.name, 
+				 'phoneNum': jobObj.pNum, 
+				 'birthday': jobObj.birthday, 
+				 'education': jobObj.Bkg, 
+				 'avatar': file.path, 
+				 'area': jobObj.area, 
+				 'desc': jobObj.desc, 
+			 });
+             newResume.save(function (err) {if (err) console.log('an error occurred'); });
+			 res.send("insertok");
+	   }else{
+		   console.log("update");
+		   Resume.updateOne({
+			'username': username
+		  }, {
+			 'name': jobObj.name, 
+				 'gender': jobObj.gender, 
+				 'phoneNum': jobObj.pNum, 
+				 'birthday': jobObj.birthday, 
+				 'education': jobObj.Bkg, 
+				 'avatar': file.path, 
+				 'area': jobObj.area, 
+				 'desc': jobObj.desc, 
+		  }, (err) => {
+			if (err) {
+				res.send("updatefail");
+			  console.log('update fail!')
+			} else {
+			  res.send("updateok");
+			  
+			}
+		  });
+		  
+        }
+    });
+	
+	console.log(jobObj);
+    console.log('filetype：%s', file.mimetype);
+    console.log('filename：%s', file.originalname);
+    console.log('filesize：%s', file.size);
+    console.log('filepath：%s', file.path);
+   
+    
 });
+
+
 // view the resume
-app.get('/home/view', (req,res) => {
-    // find the username and return the data about that username
+// app.get('/home/view', (req,res) => {
+//     // check whether the user login or not
+//     req.params.username = nameList[0];
+//     console.log(req.params.username);
+//     if(req.params.username == undefined){ // if the user doesn't login
+//         res.send("Please log in");
+//     }else{
+//         // find the username and return the data about that username
+//         Resume.find({username: req.params.username}).exec(function(error, results){
+//             res.send(JSON.stringify(results));
+//         });
+//     }
+// });
+app.post('/home/getResume/', (req, res) => {
+    //res.setHeader('Content-Type', 'text/plain');
+	let username = req.cookies['username'];
+	console.log(username);
+	if(!username){
+		res.send( 'login first!');
+		return;
+	} 
+    Resume.findOne({'username': username}).exec(function(error, results){
+        res.send(JSON.stringify(results));
+    })
+	
 });
 
 // ----below url could check/add the data----
@@ -345,7 +369,8 @@ app.post('/add/job', (req, res) => {
         if(results.length == 0){ // if doesn't exist
             var job = new Job(jobObj);
             job.save(function(err) {if(err) console.log('fail to add');});
-            console.log("finish adding the job");
+            // console.log("finish adding the job");
+            res.send('finish adding');
         }
     })
 });

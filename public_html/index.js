@@ -1,4 +1,22 @@
 var searchResult = []
+
+function applyJob(){
+	var compName = $('#companyName').val(); //todo: get the certain comp name
+	var title = $('#jobTitle').val();
+
+	$.ajax({
+		url: '/job/apply',
+		method: 'POST',
+		data:{
+			companyName: compName,
+			jobTitle: title
+		},
+		success: function(result){
+			alert('success to apply for the job');
+		}
+	});
+}
+
 function selectComp(name){
 	$('#outputArea').empty();
 	var renderHtml = '';
@@ -9,10 +27,10 @@ function selectComp(name){
 		
 		renderHtml+=`<ul>
 	<li>
-		<h3>${job.compName}</h3>
-		<p>${job.jobTitle}</p>
+		<h3 id="companyName">${job.compName}</h3>
+		<p id="jobTitle">${job.jobTitle}</p>
 		<p>${job.jobArea}</p>
-		<input type="button" value="Apply" onclick=""></input>
+		<input type="button" value="Apply" onclick="applyJob()"></input>
 	</li>
 </ul>`
 		}
@@ -31,7 +49,7 @@ function searchByTitle() {
         method: 'POST',
         success: function(result){
 			var compList=new Set();
-			console.log(result);
+			// console.log(result);
 			
 			$('#outputArea').empty();
 			var renderHtml = '';
@@ -44,10 +62,10 @@ function searchByTitle() {
 				
 				renderHtml+=`<ul>
             <li>
-                <h3>${job.compName}</h3>
-                <p>${job.jobTitle}</p>
+                <h3 id="companyName">${job.compName}</h3>
+                <p id="jobTitle">${job.jobTitle}</p>
                 <p>${job.jobArea}</p>
-                <input type="button" value="Apply" onclick=""></input>
+                <input type="button" value="Apply" onclick="applyJob()"></input>
             </li>
         </ul>`
 			}

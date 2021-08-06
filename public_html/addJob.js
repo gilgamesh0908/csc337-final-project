@@ -12,7 +12,11 @@ function addJob(){
         },
         method: 'POST',
         success: function(result){
-            alert('job added');
+            if(result == 'finish adding'){
+                alert('job added');
+            }else{
+                alert('fail to add the job');
+            }
         }
     })
 }

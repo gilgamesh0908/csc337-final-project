@@ -75,58 +75,74 @@ function changeView(w){
 }
 function addPost(){
 	$.ajax({
-    url: '/home/createResume',
-    type: 'POST',
-    cache: false,
-    data: new FormData($('#uploadForm')[0]),
-    processData: false,
-    contentType: false
-}).done(function(res) {
-	alert(res);
-}).fail(function(res) {
-	alert('Resume posted fail!');
-}); 
-}
-window.onload=function(){
-      changeView(1);
-}
-
-// use this function to add the post
-function addPostBk(){
-    let n = $('#name').val();
-    let g = $('#gend').val();
-    let p = $('#pNum').val();
-    let ph = $('#photo').val();
-    let e = $('#Bkg').val();
-    let b = $('#birthday').val();
-    let a = $('#area').val();
-    let d = $('#desc').val();
-    // console.log(n, g, p, ph, e, b, a, d);
-    $.ajax({
-        // url: '/home/create/:username',
-        url: '/home/create/',
-        data: {
-            username: '',
-            name: n,
-            gender: g,
-            phoneNum: p,
-            photo: ph,
-            education: e,
-            birthday: b,
-            area: a,
-            desc: d
-        },
-        method: 'POST',
+        url: '/home/createResume',
+        type: 'POST',
+        cache: false,
+        data: new FormData($('#uploadForm')[0]),
+        processData: false,
+        contentType: false,
         success: function(result){
-            if(result == 'Please log in'){
-                alert('Please log in first');
-            }
-            else if(result == 'exist'){
-                alert('You already have one');
+            if(result == 'login first'){
+                alert('Please log in first!');
+            }else if(result == 'insertok'){
+                alert('Success to add the resume');
+            }else if (result == 'updatefail'){
+                alert('Fail to update your resume');
+            }else if (result == 'no name'){
+                alert('Please enter the name');
             }
             else{
-                alert('resume added');
+                alert('Success to update the resume');
             }
         }
     });
-}
+    // .done(function(res) {
+    //     alert(res);
+    // }).fail(function(res) {
+    //     alert('Resume posted fail!');
+    // }); 
+    }
+
+    window.onload=function(){
+        changeView(1);
+    }
+
+// this is the backup function
+// function addPostBk(){
+//     let n = $('#name').val();
+//     let g = $('#gend').val();
+//     let p = $('#pNum').val();
+//     let ph = $('#photo').val();
+//     let e = $('#Bkg').val();
+//     let b = $('#birthday').val();
+//     let a = $('#area').val();
+//     let d = $('#desc').val();
+//     // console.log(n, g, p, ph, e, b, a, d);
+//     $.ajax({
+//         // url: '/home/create/:username',
+//         url: '/home/create/',
+//         data: {
+//             username: '',
+//             name: n,
+//             gender: g,
+//             phoneNum: p,
+//             photo: ph,
+//             education: e,
+//             birthday: b,
+//             area: a,
+//             desc: d
+//         },
+//         method: 'POST',
+//         success: function(result){
+//             if(result == 'Please log in'){
+//                 alert('Please log in first');
+//             }
+//             else if(result == 'exist'){
+//                 alert('You already have one');
+//             }
+//             else{
+//                 alert('resume added');
+//             }
+//         }
+//     });
+// }

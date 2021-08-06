@@ -30,6 +30,18 @@ body{
     margin-left: 15px;
 
 }
+#viewResumeArea{
+    position: fixed;
+    left: 25%;
+    top:10%;
+    background-color: white;
+    height: 80%;
+    width: 50%;
+    padding-top: 20px;
+    border: 1px solid black;
+    margin-left: 15px;
+
+}
 button{
     margin-left: 2%;
 }
