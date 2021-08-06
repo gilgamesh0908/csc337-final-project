@@ -1,3 +1,17 @@
+function createResumeButton(){
+    document.getElementById('createResumeArea').style.visibility = 'visible';
+    document.getElementById('viewResumeArea').style.visibility='hidden';
+}
+
+function viewResumeButton(){
+    // hide the create resume area
+    document.getElementById('createResumeArea').style.visibility = 'hidden';
+    document.getElementById('viewResumeArea').style.visibility='visible';
+
+    // show the data in database
+
+}
+
 function addpost(){
     let uname = $('#name').val();
     let ugender = $('input[name = gender]:checked', '#createResumeArea').val();
@@ -26,7 +40,7 @@ function addpost(){
         }
     })
 }
-
+// use this function to add the post
 function addPostBk(){
     let n = $('#name').val();
     let g = $('#gend').val();
@@ -38,6 +52,7 @@ function addPostBk(){
     let d = $('#desc').val();
     // console.log(n, g, p, ph, e, b, a, d);
     $.ajax({
+        // url: '/home/create/:username',
         url: '/home/create/',
         data: {
             username: '',
