@@ -138,10 +138,6 @@ app.get('/login/logIn/:username/:password/:email', (req, res) => {
 });
 // create the account [DONE, success to create the account]
 app.post('/login/create/', (req, res) => {
-    // console.log(req.params.username);
-    // console.log(req.params.password);
-    // console.log(req.params.email);
-
     let u = req.params.username;
     let e = req.params.email;
     User.find({username: u}).exec(function(error, results){
@@ -173,7 +169,14 @@ app.post('/home/create/', (req, res) => {
     let resumeObj = req.body;
     // console.log(resumeObj);
     var r = mongoose.model('Resume', ResumeSchema);
-    // r.find({})
+    // use name & telephone number to check whether already existed
+    r.find({name: resumeObj.name, phoneNum: resumeObj.phoneNum}).exec(function(error, results){
+        if(results.length == 0){ // if the resume doesnt exist
+            var resume = new Resume(resumeObj);
+            resume.save(function(err) {if(err) console.log('fail to add');});
+            console.log('finish to add the resume into database');
+        }
+    });
 });
 // view the resume
 app.get('/home/view', (req,res) => {
