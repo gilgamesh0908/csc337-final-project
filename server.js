@@ -126,6 +126,7 @@ app.get('/login/logIn/:username/:password', (req, res) => {
                 if(results[0].hash == hashStr){
                     let sessionkey = Math.floor(Math.random() * 1000);
                     sessionKeys[u] = [sessionkey, Date.now()];
+                    nameList.push(u);
                     res.cookie("login", {username: u, key: sessionkey}, {maxAge: 20000});
                     res.send("succeed");
                 }else{
@@ -167,21 +168,31 @@ app.post('/login/create/', (req, res) => {
 //todo: continue here
 // create the resume
 app.post('/home/create/', (req, res) => {
-    // req.params.username = nameList[0];
-    // console.log(req.params.username);
-    // console.log('here');
-    console.log(req.body);
-    let resumeObj = req.body;
-    // console.log(resumeObj);
-    var r = mongoose.model('Resume', ResumeSchema);
-    // use name & telephone number to check whether already existed
-    r.find({name: resumeObj.name, phoneNum: resumeObj.phoneNum}).exec(function(error, results){
-        if(results.length == 0){ // if the resume doesnt exist
-            var resume = new Resume(resumeObj);
-            resume.save(function(err) {if(err) console.log('fail to add');});
-            console.log('finish to add the resume into database');
-        }
-    });
+    req.params.username = nameList[0];
+    console.log(req.params.username);
+    if(req.params.username == undefined){
+        res.send("Please log in");
+    }else{
+        // console.log('here');
+        // console.log(req.body);
+        let resumeObj = req.body;
+        req.body.username = req.params.username;
+        // console.log(req.body);
+        // console.log(resumeObj);
+        var r = mongoose.model('Resume', ResumeSchema);
+
+        // use name & username to check whether already existed
+        r.find({name: resumeObj.name, username: req.params.username}).exec(function(error, results){
+            if(results.length == 0){ // if the resume doesnt exist
+                var resume = new Resume(resumeObj);
+                resume.save(function(err) {if(err) console.log('fail to add');});
+                console.log('finish to add the resume into database');
+            }else{
+                // console.log('you already have the resume');
+                res.send("exist");
+            }
+        });
+    }
 });
 // view the resume
 app.get('/home/view', (req,res) => {
