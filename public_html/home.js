@@ -67,7 +67,15 @@ function addPostBk(){
         },
         method: 'POST',
         success: function(result){
-            alert('resume added');
+            if(result == 'Please log in'){
+                alert('Please log in first');
+            }
+            else if(result == 'exist'){
+                alert('You already have one');
+            }
+            else{
+                alert('resume added');
+            }
         }
     });
 }
