@@ -1,15 +1,54 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const parser = require('body-parser');
+const bodyParser = require('body-parser');
+
 const cookieParser = require('cookie-parser'); //npm install cookie-parser
 const crypto = require('crypto');
-const db = mongoose.connection;
-const mongoDBURL = 'mongodb://127.0.0.1/job'; // the name of the collection is "job"
-const iterations = 1000;
+
+
+var router = express.Router();
+ 
+var fs = require('fs');
+var multer  = require('multer');
+ 
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+       
+        cb(null, 'upload/');   
+    },
+    filename: function (req, file, cb) {
+        
+        cb(null, Date.now() + "-" + file.originalname); 
+    }
+});
+ 
+
+var createFolder = function(folder){
+    try{
+        
+        fs.accessSync(folder);
+    }catch(e){
+      
+        fs.mkdirSync(folder);
+    } 
+};
+ 
+var uploadFolder = './upload/';
+createFolder(uploadFolder);
+ 
+
+var upload = multer({ storage: storage });
+ 
+
 
 const app = express();
-app.use(parser.json());
-app.use(parser.urlencoded({ extended: true}));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false })); 
+const db = mongoose.connection;
+const mongoDBURL = 'mongodb://localhost:27017/job'; // the name of the collection is "job"
+const iterations = 1000;
 
 var sessionKeys = {};
 
@@ -23,24 +62,25 @@ var UserSchema = new Schema({
 });
 var ResumeSchema = new Schema({
     username: String,
-    name: String,
     gender: String,
+    name: String,
     phoneNum: String,
-    photo: String,
+	birthday:String,
+	avatar:String,
     education: String,
-    birthday: String,
     area: String,
     desc: String,
 });
 var JobSchema = new Schema({
     jobTitle: String,
     compName: String,
+    jobArea: String,
     resumeList: Array,
 });
 var User = mongoose.model('User', UserSchema);
 var Resume = mongoose.model('Resume', ResumeSchema);
 var Job = mongoose.model('Job', JobSchema);
-
+ 
 mongoose.connect(mongoDBURL, { useNewUrlParser: true });
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
@@ -61,7 +101,7 @@ function authenticate(req, res, next) {
 }
 
 function updateSessions() {
-    // console.log('session update function');
+    //console.log('session update function');
     let now = Date.now();
     for (e in sessionKeys) {
       if (sessionKeys[e][1] < (now - 20000)) {
@@ -72,21 +112,9 @@ function updateSessions() {
 setInterval(updateSessions, 2000); //change later
 
 app.use(cookieParser());
-app.use(express.static('public_html'));
+app.use('/upload', express.static('upload'));
+app.use('/', express.static('public_html'));
 app.use('/user.html', authenticate); // not sure
-app.use('/addJob.html', (req, res) => {
-    let jobObj = req.body;
-    console.log(jobObj);
-    var j = mongoose.model('Job', JobSchema);
-    j.find({jobTitle: jobObj.jTitle, compName: jobObj.compName}).exec(function(error, results){
-        if(results.length == 0){ // if doesn't exist
-            var job = new Job(jobObj);
-            job.save(function(err) {if(err) console.log('fail to add');});
-            console.log("finish adding the job");
-        }
-    })
- });
-// search the job position by typing the company name 
 app.get('/job/search/:companyName', (req, res) => {
     res.setHeader('Content-Type', 'text/plain');
     let keyword = new RegExp(decodeURIComponent(req.params.companyName));
@@ -94,7 +122,92 @@ app.get('/job/search/:companyName', (req, res) => {
         res.send(JSON.stringify(results));
     })
 });
-// apply for the job
+app.post('/job/searchByTitle/', (req, res) => {
+    //res.setHeader('Content-Type', 'text/plain');
+	 let jobObj = req.body;
+    let keyword = new RegExp(decodeURIComponent(jobObj.jobTitle));
+	console.log(jobObj)
+	console.log(keyword)
+    Job.find({jobTitle: keyword}).exec(function(error, results){
+        res.send(JSON.stringify(results));
+    })
+});
+
+app.post('/home/getResume/', (req, res) => {
+    //res.setHeader('Content-Type', 'text/plain');
+	let username = req.cookies['username'];
+	console.log(username);
+	if(!username){
+		res.send( 'login first!');
+		return;
+	} 
+    Resume.findOne({'username': username}).exec(function(error, results){
+        res.send(JSON.stringify(results));
+    })
+	
+});
+/* POST upload listing. */
+app.post('/home/createResume', upload.single('file'), function(req, res, next) {
+    var file = req.file;
+	let jobObj = req.body;
+	let username = req.cookies['username'];
+	console.log(username);
+	if(!username){
+		res.send( 'login first!');
+		return;
+	}
+	
+	var r = mongoose.model('Resume', ResumeSchema);
+    r.find({username:username}).exec(function(error, results){
+        if(results.length == 0){ // there's no more than one account
+		 
+			 var newResume = new Resume({
+				 'username': username, 
+				 'gender': jobObj.gender, 
+				 'name': jobObj.name, 
+				 'phoneNum': jobObj.pNum, 
+				 'birthday': jobObj.birthday, 
+				 'education': jobObj.Bkg, 
+				 'avatar': file.path, 
+				 'area': jobObj.area, 
+				 'desc': jobObj.desc, 
+			 });
+             newResume.save(function (err) {if (err) console.log('an error occurred'); });
+			 res.send("insertok");
+	   }else{
+		   console.log("update");
+		   Resume.updateOne({
+			'username': username
+		  }, {
+			 'name': jobObj.name, 
+				 'gender': jobObj.gender, 
+				 'phoneNum': jobObj.pNum, 
+				 'birthday': jobObj.birthday, 
+				 'education': jobObj.Bkg, 
+				 'avatar': file.path, 
+				 'area': jobObj.area, 
+				 'desc': jobObj.desc, 
+		  }, (err) => {
+			if (err) {
+				res.send("updatefail");
+			  console.log('updatefail')
+			} else {
+			  res.send("updateok");
+			  
+			}
+		  });
+		  
+        }
+    });
+	
+	console.log(jobObj);
+    console.log('filetype：%s', file.mimetype);
+    console.log('filename：%s', file.originalname);
+    console.log('filesize：%s', file.size);
+    console.log('filepath：%s', file.path);
+  
+    
+});
 app.post('/job/apply/:comp/:uname', (req, res) => {
     let jobObj = req.body;
     var j = mongoose.model('Job', JobSchema);
@@ -111,21 +224,20 @@ app.post('/job/apply/:comp/:uname', (req, res) => {
         }
     })
 });
-// if has an account, login
-app.get('/login/logIn/:username/:password/:email', (req, res) => {
+app.get('/login/login/:username/:password', (req, res) => {
     let u = req.params.username;
     User.find({username: u}).exec(function(error, results){
         if(results.length == 1){ // there's no more than one account
             let p = req.params.password;
             var salt = results[0].salt;
-            crypto.pbkdf2(password, salt, iterations, 64, 'sha512', (err, hash) => {
+            crypto.pbkdf2(p, salt, iterations, 64, 'sha512', (err, hash) => {
                 if (err) throw err;
                 let hashStr = hash.toString('base64');
                 
                 if(results[0].hash == hashStr){
                     let sessionkey = Math.floor(Math.random() * 1000);
                     sessionKeys[u] = [sessionkey, Date.now()];
-                    res.cookie("login", {username: u, key: sessionkey}, {maxAge: 20000});
+                    res.cookie("username", `${u}`, {maxAge: 1000*60*60*60});
                     res.send("succeed");
                 }else{
                     res.send("fail");
@@ -136,12 +248,7 @@ app.get('/login/logIn/:username/:password/:email', (req, res) => {
         }
     });
 });
-// create the account [DONE, success to create the account]
-app.post('/login/create/', (req, res) => {
-    // console.log(req.params.username);
-    // console.log(req.params.password);
-    // console.log(req.params.email);
-
+app.post('/login/create/:username/:password/:email', (req, res) => {
     let u = req.params.username;
     let e = req.params.email;
     User.find({username: u}).exec(function(error, results){
@@ -152,7 +259,6 @@ app.post('/login/create/', (req, res) => {
                 if (err) throw err;
                 let hashStr = hash.toString('base64');
                 console.log(hashStr);
-                console.log(u);
                 var user = new User({'username': u, 'salt': salt, 'hash': hashStr, 'email': e});
                 user.save(function (err) {if (err) console.log('an error occurred'); });
                 res.send('account created');
@@ -161,32 +267,13 @@ app.post('/login/create/', (req, res) => {
             res.send('username already taken');
         }
     });
-
-    // let userObj = req.body;
-    // console.log(userObj);
 });
-//todo: continue here
-// create the resume
-app.post('/home/create/', (req, res) => {
-    console.log('here');
-    console.log(req.body);
-    let resumeObj = req.body;
-    // console.log(resumeObj);
-    var r = mongoose.model('Resume', ResumeSchema);
-    // r.find({})
-});
-// view the resume
-app.get('/home/view', (req,res) => {
-
-});
-
-// ----below url could check/add the data----
-// to add the job into the database
 app.post('/add/job', (req, res) => {
+    //todo: continue here (addJob.html, addJob.js)
     let jobObj = req.body;
-    console.log(jobObj);
+	
     var j = mongoose.model('Job', JobSchema);
-    j.find({jobTitle: jobObj.jTitle, compName: jobObj.compName}).exec(function(error, results){
+    j.find({jobTitle: jobObj.jTitle, compName: jobObj.compName, jobArea: jobObj.jobArea}).exec(function(error, results){
         if(results.length == 0){ // if doesn't exist
             var job = new Job(jobObj);
             job.save(function(err) {if(err) console.log('fail to add');});
@@ -194,30 +281,14 @@ app.post('/add/job', (req, res) => {
         }
     })
 });
-
-// to list all the users in the database
-app.get('/get/users', (req, res) => {
-    res.setHeader('Content-Type', 'text/plain');
-    var u = mongoose.model('User', UserSchema);
-    u.find({}).exec(function(error, results){
-        res.send(JSON.stringify(results, null, 4));
-    });
-});
-// to list all the jobs in the database
-app.get('/get/jobs', (req, res) => {
-    res.setHeader('Content-Type', 'text/plain');
-    var j = mongoose.model('Job', JobSchema);
-    j.find({}).exec(function(error, results){
-        res.send(JSON.stringify(results, null, 4));
-    });
-});
-// to list all the resume in the database
-app.get('/get/resume', (req, res) => {
-    res.setHeader('Content-Type', 'text/plain');
+//todo: continue here
+app.post('/home/create', (req, res) => {
+    let resumeObj = req.body;
     var r = mongoose.model('Resume', ResumeSchema);
-    r.find({}).exec(function(error, results){
-        res.send(JSON.stringify(results, null, 4));
-    });
+    r.find({username:resumeObj.username, name:resumeObj.name, phoneNum:resumeObj.pNum,  })
+});
+app.get('/home/view', (req,res) => {
+
 });
 
 
