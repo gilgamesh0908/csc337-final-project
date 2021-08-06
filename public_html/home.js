@@ -1,18 +1,5 @@
-function createResumeButton(){
-    document.getElementById('createResumeArea').style.visibility = 'visible';
-    document.getElementById('viewResumeArea').style.visibility='hidden';
-}
 
-function viewResumeButton(){
-    // hide the create resume area
-    document.getElementById('createResumeArea').style.visibility = 'hidden';
-    document.getElementById('viewResumeArea').style.visibility='visible';
-
-    // show the data in database
-
-}
-
-function addpost(){
+  function addpost1(){
     let uname = $('#name').val();
     let ugender = $('input[name = gender]:checked', '#createResumeArea').val();
     let upNum = $('#pNum').val();
@@ -25,7 +12,6 @@ function addpost(){
     let udesc =$('#desc').val();
     let newpost = {name:uname,gender:ugender,pNum:upNum,bkg:ubkg,birthday:ubirthday,area:uarea,desc:udesc}
     let postObj = JSON.stringify(newpost);
-    console.log(postObj);
     $.ajax({
         url: '/home/create',
         data: {newpost:postObj},
@@ -40,6 +26,71 @@ function addpost(){
         }
     })
 }
+
+function createResumeButton(){
+    document.getElementById('createResumeArea').style.visibility = 'visible';
+    document.getElementById('viewResumeArea').style.visibility='hidden';
+}
+
+function viewResumeButton(){
+    // hide the create resume area
+    document.getElementById('createResumeArea').style.visibility = 'hidden';
+    document.getElementById('viewResumeArea').style.visibility='visible';
+
+    // show the data in database
+}
+
+function updateUI(){
+	$.ajax({
+    url: '/home/getResume',
+    type: 'POST',
+    cache: false,
+    processData: false,
+    contentType: false
+}).done(function(res) {
+	 
+	 var jsonObj = JSON.parse(res)
+	 console.log(jsonObj);
+	 $('#vimg').attr('src',jsonObj.avatar);
+	 $('#vname').text(jsonObj.name);
+	 $('#vgender').text(jsonObj.gender);
+	 $('#vpNum').text(jsonObj.phoneNum);
+	 $('#veduBkg').text(jsonObj.education);
+	 $('#vbirthday').text(jsonObj.birthday);
+	 $('#varea').text(jsonObj.area);
+	 $('#vdesc').text(jsonObj.desc);
+}).fail(function(res) {
+}); 
+}
+function changeView(w){
+	console.log(w);
+	$('#createResumeArea').hide();
+	$('#viewResumeArea').hide();
+	if(w==1){
+		$('#createResumeArea').show();
+	}else{
+		updateUI()
+		$('#viewResumeArea').show();
+	}
+}
+function addPost(){
+	$.ajax({
+    url: '/home/createResume',
+    type: 'POST',
+    cache: false,
+    data: new FormData($('#uploadForm')[0]),
+    processData: false,
+    contentType: false
+}).done(function(res) {
+	alert(res);
+}).fail(function(res) {
+	alert('Resume posted fail!');
+}); 
+}
+window.onload=function(){
+      changeView(1);
+}
+
 // use this function to add the post
 function addPostBk(){
     let n = $('#name').val();
