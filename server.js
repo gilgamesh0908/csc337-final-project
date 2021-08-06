@@ -12,6 +12,7 @@ app.use(parser.json());
 app.use(parser.urlencoded({ extended: true}));
 
 var sessionKeys = {};
+var nameList = [];
 
 var Schema = mongoose.Schema;
 var UserSchema = new Schema({
@@ -112,13 +113,13 @@ app.post('/job/apply/:comp/:uname', (req, res) => {
     })
 });
 // if has an account, login
-app.get('/login/logIn/:username/:password/:email', (req, res) => {
+app.get('/login/logIn/:username/:password', (req, res) => {
     let u = req.params.username;
     User.find({username: u}).exec(function(error, results){
         if(results.length == 1){ // there's no more than one account
             let p = req.params.password;
             var salt = results[0].salt;
-            crypto.pbkdf2(password, salt, iterations, 64, 'sha512', (err, hash) => {
+            crypto.pbkdf2(p, salt, iterations, 64, 'sha512', (err, hash) => {
                 if (err) throw err;
                 let hashStr = hash.toString('base64');
                 
@@ -138,17 +139,19 @@ app.get('/login/logIn/:username/:password/:email', (req, res) => {
 });
 // create the account [DONE, success to create the account]
 app.post('/login/create/', (req, res) => {
-    let u = req.params.username;
-    let e = req.params.email;
+    // console.log(req.body);
+    let u = req.body.username;
+    let e = req.body.email;
     User.find({username: u}).exec(function(error, results){
         if(results.length == 0){ // if the username doesn't exist
-            let p = req.params.password;
+            let p = req.body.password;
+            // console.log(p);
             var salt = crypto.randomBytes(64).toString('base64');
             crypto.pbkdf2(p, salt, iterations, 64, 'sha512', (err, hash) => {
                 if (err) throw err;
                 let hashStr = hash.toString('base64');
-                console.log(hashStr);
-                console.log(u);
+                // console.log(hashStr);
+                // console.log(u);
                 var user = new User({'username': u, 'salt': salt, 'hash': hashStr, 'email': e});
                 user.save(function (err) {if (err) console.log('an error occurred'); });
                 res.send('account created');
@@ -164,7 +167,9 @@ app.post('/login/create/', (req, res) => {
 //todo: continue here
 // create the resume
 app.post('/home/create/', (req, res) => {
-    console.log('here');
+    // req.params.username = nameList[0];
+    // console.log(req.params.username);
+    // console.log('here');
     console.log(req.body);
     let resumeObj = req.body;
     // console.log(resumeObj);
@@ -180,7 +185,7 @@ app.post('/home/create/', (req, res) => {
 });
 // view the resume
 app.get('/home/view', (req,res) => {
-
+    // find the username and return the data about that username
 });
 
 // ----below url could check/add the data----
