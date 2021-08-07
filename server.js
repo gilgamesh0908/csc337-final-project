@@ -1,3 +1,8 @@
+/**
+ * Author: Aerror Li, Lingxiao Meng
+ * Class: CSC337 
+ * Purpose: the whole server.js.
+ */
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -15,24 +20,27 @@ var fs = require('fs');
 var multer  = require('multer');
  
 
+// Use hard disk storage mode to set the path and filename of the received file
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-       
+        // path to save the output after receiving the file (if it does not exist, you need to create it)
         cb(null, 'upload/');   
     },
     filename: function (req, file, cb) {
-        
+        // Set the save file name to timestamp + original file name
         cb(null, Date.now() + "-" + file.originalname); 
     }
 });
  
 
+// Create folder This code is used so that we can find out if the folder exists on the disk, and if not, it can be created automatically, instead of creating it manually in advance. If we don't use this code, we will need to create the current folder manually before we can use it again
 var createFolder = function(folder){
     try{
-        
+        // Test the user permissions of the file or directory specified by path, which we use to check if the file exists
+        // If the file path does not exist, an error "no such file or directory" will be thrown.
         fs.accessSync(folder);
     }catch(e){
-      
+        // Folder does not exist, create the file directory synchronized.
         fs.mkdirSync(folder);
     } 
 };
@@ -40,7 +48,7 @@ var createFolder = function(folder){
 var uploadFolder = './upload/';
 createFolder(uploadFolder);
  
-
+// Create the multer object
 var upload = multer({ storage: storage });
  
 const db = mongoose.connection;
@@ -126,6 +134,7 @@ app.use('/addJob.html', (req, res) => {
         }
     })
  });
+ //  get job information by company name
 app.get('/job/search/:companyName', (req, res) => {
     res.setHeader('Content-Type', 'text/plain');
     let keyword = new RegExp(decodeURIComponent(req.params.companyName));
@@ -133,6 +142,7 @@ app.get('/job/search/:companyName', (req, res) => {
         res.send(JSON.stringify(results));
     })
 });
+//  search jobs by job title
 app.post('/job/searchByTitle/', (req, res) => {
     //res.setHeader('Content-Type', 'text/plain');
 	 let jobObj = req.body;
@@ -143,7 +153,7 @@ app.post('/job/searchByTitle/', (req, res) => {
         res.send(JSON.stringify(results));
     })
 });
-
+// apply job under the job informations
 app.post('/job/apply', (req, res) => {
     let jobObj = req.body;
     console.log(jobObj);

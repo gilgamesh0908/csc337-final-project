@@ -1,8 +1,13 @@
+/* 
+Author: Aerror Li, Lingxiao Meng
+Class: CSC337 
+Purpose: This is index style css.
+*/
 body{
     margin: 0px;
     padding: 0px;
     background-color: rgb(236, 233, 233);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .front{
@@ -40,18 +45,23 @@ body{
     height: 75%;
     
 }
+
 ul{
     list-style-type: none;
     margin: 0;
     padding: 0;
     width: 200px;
+    color:black
 }
+
 li a{
     display: block;
-    color: black;
+    color:rgba(0, 0, 255, 0.253);
     padding: 8px 16px;
     text-decoration: none;
+
 }
+
 li a:hover{
     background-color:lightgray;
     color: white;

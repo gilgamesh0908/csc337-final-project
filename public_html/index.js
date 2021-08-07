@@ -1,5 +1,12 @@
+/**
+ * Author: Aerror Li, Lingxiao Meng
+ * Class: CSC337 
+ * Purpose: the js for seraching job information
+ * by job title, select company filter, apply job. 
+ */
 var searchResult = []
 
+// apply jobs under the information
 function applyJob(){
 	var compName = $('#companyName').val(); //todo: get the certain comp name
 	console.log('here');
@@ -19,11 +26,11 @@ function applyJob(){
 			}else{
 				alert('Please log in first');
 			}
-			
 		}
 	});
 }
 
+//select jobs by different company's name
 function selectComp(name){
 	$('#outputArea').empty();
 	var renderHtml = '';
@@ -45,6 +52,8 @@ function selectComp(name){
 
 	$('#outputArea').html(renderHtml);
 }
+
+//use job title to search jobs from database
 function searchByTitle() {
     let item = $('#searchbar').val();
  

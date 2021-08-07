@@ -1,3 +1,9 @@
+/**
+ * Author: Aerror Li, Lingxiao Meng
+ * Class: CSC337 
+ * Purpose: This is js for update create account and login information.
+ */
+// the function for login
 function login(){
   let username = $('#lusername').val();
   let password = $('#lpassword').val();
@@ -17,6 +23,7 @@ function login(){
     });
 }
 
+// the function for create
 function create(){
   let nemail = $('#email').val();
   let nusername = $('#username').val();
