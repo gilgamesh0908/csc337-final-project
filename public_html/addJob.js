@@ -1,3 +1,7 @@
+
+// Author: Aerror Li, Lingxiao Meng
+// Class: CSC337 
+// Purpose: This is the javascript to update the jobs' information for database.
 function addJob(){
     let title = $('#jTitle').val();
     let comp = $('#compName').val();
@@ -12,7 +16,11 @@ function addJob(){
         },
         method: 'POST',
         success: function(result){
-            alert('job added');
+            if(result == 'finish adding'){
+                alert('job added');
+            }else{
+                alert('fail to add the job');
+            }
         }
     })
 }

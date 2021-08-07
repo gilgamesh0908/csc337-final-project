@@ -1,88 +1,103 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" type="text/css" href="home.css">
-    <script src="home.js"></script>
-    <script src="jquery.js"></script>
-    <title>Home</title>
-</head>
-<body>
-    <div class="front">
-        <div id="buttons">
-            <input type="button" value="Job" onclick="window.location.href='index.html'"></input>
-            <input type="button" value="Home" onclick="window.location.href='home.html'"></input>
-            <input type="button" value="Login" onclick="window.location.href='login.html'"></input>
-        </div>
-    </div>
-
-    <div id="opColumn">
-        <input type="button" value="Create a resume" onclick="changeView(1)"></input> <br><br><br><br><br><br>
-        <input type="button" value="View the resume" onclick="changeView(2)"></input>
-    </div>
-	<div id="createResumeArea" >
-		<form   id="uploadForm"   enctype="multipart/form-data">
+<!-- 
+Author: Aerror Li, Lingxiao Meng
+Class: CSC337 
+Purpose: This is the home page for user to create their resume and view their resume information.
+ -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+	 <link rel="stylesheet" type="text/css" href="home.css">
+	 <script src="home.js"></script>
+	 <script src="jquery.js"></script>
+	 <title>Home</title>
+ </head>
+ <body>
+	 <div class="front">
+		 <div id="buttons">
+			 <input type="button" value="Job" onclick="window.location.href='index.html'"></input>
+			 <input type="button" value="Home" onclick="window.location.href='home.html'"></input>
+			 <input type="button" value="Login" onclick="window.location.href='login.html'"></input>
+		 </div>
+	 </div>
+ 
+	 <div id="opColumn">
+ 
+		 <input type="button" value="Create a resume" onclick="changeView(1)"></input> <br><br><br><br><br><br>
+		 <input type="button" value="View the resume" onclick="changeView(2)"></input>
+ 
+		 <!-- <input type="button" value="Create a resume" onclick="createResumeButton()"></input> <br><br><br><br><br><br>
+		 <input type="button" value="View the resume" onclick="viewResumeButton()"></input> -->
+ 
+	 </div>
+	 <div id="createResumeArea" >
+		 <form   id="uploadForm"   enctype="multipart/form-data">
+			 
+				 &emsp;<label for="name">Name</label>
+				 <input name="name" type="text"></input>
+			 </br></br>
 			
-				&emsp;<label for="name">Name</label>
-				<input name="name" type="text"></input>
-			</br></br>
-		   
-				&emsp;<label for="gender">Gender</label>
-				<input type="radio" name="gender" value="Male" checked>Male  <input type="radio" name="gender" value="Female">Female<br><br>
-			</br></br>
-				&emsp;<label for="pNum">Phone number</label>
-				<input name="pNum" type="tel"></input>
-			</br></br>
-				&emsp;<label for="photo">Upload photo</label>
-				<input name="file" type="file"></input>
-			</br></br>
-				&emsp;<label for="eduBkg">Education background</label>
-				<input type="radio" name="Bkg" name="eduBkg" value="Undergraduate" checked>Undergraduate
-				<input type="radio" name="Bkg"name="eduBkg" value="HighSchool">High School<br><br>
-			</br></br>
-				&emsp;<label for="birthday">Birthday</label>
-				<input name="birthday" type="date"></input>
-			</br></br>
-				&emsp;<label for="area">Interested Area</label>
-				<input name="area" type="text"></input>
-			</br></br>
-				&emsp;<label for="desc">Description</label>
-				<input name="desc" type="text"></input>
-			</br></br>
-				<button type = "button"  onclick="addPost()">Post</button>
+				 &emsp;<label for="gender">Gender</label>
+				 <input type="radio" name="gender" value="Male" checked>Male  <input type="radio" name="gender" value="Female">Female<br><br>
+			 </br></br>
+				 &emsp;<label for="pNum">Phone number</label>
+				 <input name="pNum" type="tel"></input>
+			 </br></br>
+				 &emsp;<label for="photo">Upload photo</label>
+				 <input name="file" type="file"></input>
+			 </br></br>
+				 &emsp;<label for="eduBkg">Degree</label>
+				 <input type="radio" name="Bkg" name="eduBkg" value="Bachelor" checked>Bachelor
+				 <input type="radio" name="Bkg" name="eduBkg" value="Master" checked>Master
+				 <input type="radio" name="Bkg" name="eduBkg" value="Doctor" checked>Doctor
+				 <input type="radio" name="Bkg"name="eduBkg" value="HighSchool">High School
+				 <input type="radio" name="Bkg"name="eduBkg" value="Other">Other<br><br>
+			 </br></br>
+				 &emsp;<label for="birthday">Birthday</label>
+				 <input name="birthday" type="date"></input>
+			 </br></br>
+				 &emsp;<label for="area">Interested Area</label>
+				 <input name="area" type="text"></input>
+			 </br></br>
+				 &emsp;<label for="desc">Description</label>
+				 <input name="desc" type="text"></input>
+			 </br></br>
+				 &emsp;<button type = "button"  onclick="addPost()">Submit</button>
+		 <!-- if want to use another method: change to addPostBk() -->
+			 
+ 
+		 </form>
+	 </div>
+	 <div id="viewResumeArea"  style=" padding:50px 20px 20px 20px;display:flex;flex-direction:row"  >
+			 <img width="200" height="150" id="vimg" src="" />
+				 
+			 <div style="padding:20px;">
+			 <label for="name">Name:</label> 
+			 <label id="vname"></label> 
+			 </br></br>
 			
-
-		</form>
-	</div>
-    <div id="viewResumeArea"  style=" padding:50px 20px 20px 20px;display:flex;flex-direction:row"  >
-			<img width="200" height="150" id="vimg" src="" />
-				
-			<div style="padding:20px;">
-			<label for="name">Name:</label> 
-			<label id="vname"></label> 
-			</br></br>
-		   
-				<label for="gender">Gender:</label>
-				<label id="vgender"></label>
-				
-			</br></br>
-				<label for="pNum">Phone number:</label> 
-				<label id="vpNum"></label> 
-		
-			</br></br>
-				<label for="eduBkg">Education background:</label>
-				<label id="veduBkg"></label>
-			</br></br>
-				<label for="birthday">Birthday:</label>
-				<label id="vbirthday"></label>
-			</br></br>
-				<label for="area">Interested Area:</label>
-				<label id="varea"></label>
-			</br></br>
-				<label for="desc">Description:</label></br>
-				<label id="vdesc"></label>
-			</br></br>
-    </div>
-    </div>
-
-</body>
-</html>
+				 <label for="gender">Gender:</label>
+				 <label id="vgender"></label>
+				 
+			 </br></br>
+				 <label for="pNum">Phone number:</label> 
+				 <label id="vpNum"></label> 
+		 
+			 </br></br>
+				 <label for="eduBkg">Education background:</label>
+				 <label id="veduBkg"></label>
+			 </br></br>
+				 <label for="birthday">Birthday:</label>
+				 <label id="vbirthday"></label>
+			 </br></br>
+				 <label for="area">Interested Area:</label>
+				 <label id="varea"></label>
+			 </br></br>
+				 <label for="desc">Description:</label></br>
+				 <label id="vdesc"></label>
+			 </br></br>
+	 </div>
+	 </div>
+ 
+ </body>
+ </html>
+ 

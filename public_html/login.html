@@ -1,56 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" type="text/css" href="login.css">
-    <script src="login.js"></script>
-    <script src="jquery.js"></script>
-    <title>Login</title>
-</head>
-<body>
-   <div class="front">
-    <div id="buttons">
-        <input type="button" value="Job" onclick="window.location.href='index.html'"></input>
-        <input type="button" value="Home" onclick="window.location.href='home.html'"></input>
-        <input type="button" value="Login" onclick="window.location.href='login.html'"></input>
+<!-- 
+Author: Aerror Li, Lingxiao Meng
+Class: CSC337 
+Purpose: This is login and create account html, user 
+could create the account and login account in this page.
+ -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <link rel="stylesheet" type="text/css" href="login.css">
+     <script src="login.js"></script>
+     <script src="jquery.js"></script>
+     <title>Login</title>
+ </head>
+ <body>
+    <div class="front">
+     <div id="buttons">
+         <input type="button" value="Job" onclick="window.location.href='index.html'"></input>
+         <input type="button" value="Home" onclick="window.location.href='home.html'"></input>
+         <input type="button" value="Login" onclick="window.location.href='login.html'"></input>
+     </div>
     </div>
-   </div>
-   <div class="main">
-    <div class="left">
-        
+    <div class="main">
+     <div class="left">
+         
+     
+         <div id="login">
+             <h1>Login</h1>
+             <label for="lusername">Username</label>
+             <input id="lusername" type="text"> </input>
+             <br/><br/>
+             <label for="lpassword">Password</label>
+             <input id="lpassword" type="password"> </input>
+             <br/><br/>
+             <button onclick="login()" >Login</button>
+         </div>
+     </div>
+     
+     <div class="right">
+         <div id="create">
+             <h1>Create Account</h1>
+             <label for="email">Email Address</label>
+             <input id="email" type="email"> </input>
+             <br/><br/>
+             <label for="username">Username</label>
+             <input id="username" type="text"> </input>
+             <br/><br/>
+             <label for="password1">Password</label>
+             <input id="password1" type="password"> </input>
+             <br/><br/>
+             <label for="password2">Re-enter Password</label>
+             <input id="password2" type="password"> </input>
+             <br/><br/>
+             <button onclick="create()" >Create</button>
+         </div>
+     </div>
     
-        <div id="login">
-            <h1>Login</h1>
-            <label for="lusername">Username</label>
-            <input id="lusername" type="text"> </input>
-            <br/><br/>
-            <label for="lpassword">Password</label>
-            <input id="lpassword" type="password"> </input>
-            <br/><br/>
-            <button onclick="login()" >Login</button>
-        </div>
     </div>
-    
-    <div class="right">
-        <div id="create">
-            <h1>Create Account</h1>
-            <label for="email">Email Address</label>
-            <input id="email" type="email"> </input>
-            <br/><br/>
-            <label for="username">Username</label>
-            <input id="username" type="text"> </input>
-            <br/><br/>
-            <label for="password1">Password</label>
-            <input id="password1" type="password"> </input>
-            <br/><br/>
-            <label for="password2">Re-enter Password</label>
-            <input id="password2" type="password"> </input>
-            <br/><br/>
-            <button onclick="create()" >Create</button>
-        </div>
-    </div>
-   
-   </div>
-
-    
-</body>
-</html>
+ 
+     
+ </body>
+ </html>
+ 

@@ -1,8 +1,16 @@
-body{
+/*
+Author: Aerror Li, Lingxiao Meng
+Class: CSC337 
+Purpose: This is login style css. 
+ */
+ body{
     margin: 0px;
     padding: 0px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     background-color: rgb(236, 233, 233);
+}
+h1{
+    color: cadetblue;
 }
 .main{
     height: 70%;

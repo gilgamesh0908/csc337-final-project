@@ -1,4 +1,36 @@
+// Author: Aerror Li, Lingxiao Meng
+// Class: CSC337 
+// Purpose: the js for seraching job information
+// by job title, select company filter, apply job. 
+// .
 var searchResult = []
+
+// apply jobs under the information
+function applyJob(){
+	var compName = $('#companyName').val(); //todo: get the certain comp name
+	console.log('here');
+	console.log(compName);
+	var title = $('#jobTitle').val();
+
+	$.ajax({
+		url: '/job/apply',
+		method: 'POST',
+		data:{
+			companyName: compName,
+			jobTitle: title
+		},
+		success: function(result){
+			if(result == 'yes'){
+				alert('Success to apply for the job!');
+			}else{
+				alert('Please log in first');
+			}
+			
+		}
+	});
+}
+
+//select jobs by different company's name
 function selectComp(name){
 	$('#outputArea').empty();
 	var renderHtml = '';
@@ -9,10 +41,10 @@ function selectComp(name){
 		
 		renderHtml+=`<ul>
 	<li>
-		<h3>${job.compName}</h3>
-		<p>${job.jobTitle}</p>
+		<h3 id="companyName">${job.compName}</h3>
+		<p id="jobTitle">${job.jobTitle}</p>
 		<p>${job.jobArea}</p>
-		<input type="button" value="Apply" onclick=""></input>
+		<input type="button" value="Apply" onclick="applyJob()"></input>
 	</li>
 </ul>`
 		}
@@ -20,6 +52,8 @@ function selectComp(name){
 
 	$('#outputArea').html(renderHtml);
 }
+
+//use job title to search jobs from database
 function searchByTitle() {
     let item = $('#searchbar').val();
  
@@ -31,7 +65,7 @@ function searchByTitle() {
         method: 'POST',
         success: function(result){
 			var compList=new Set();
-			console.log(result);
+			// console.log(result);
 			
 			$('#outputArea').empty();
 			var renderHtml = '';
@@ -44,10 +78,10 @@ function searchByTitle() {
 				
 				renderHtml+=`<ul>
             <li>
-                <h3>${job.compName}</h3>
-                <p>${job.jobTitle}</p>
+                <h3 id="companyName">${job.compName}</h3>
+                <p id="jobTitle">${job.jobTitle}</p>
                 <p>${job.jobArea}</p>
-                <input type="button" value="Apply" onclick=""></input>
+                <input type="button" value="Apply" onclick="applyJob()"></input>
             </li>
         </ul>`
 			}

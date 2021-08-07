@@ -1,13 +1,17 @@
+// Author: Aerror Li, Lingxiao Meng
+// Class: CSC337 
+// Purpose: This is js for update create account and login information.
 function login(){
   let username = $('#lusername').val();
   let password = $('#lpassword').val();
   $.ajax({
-    url: '/login/login/'+username+'/'+password,
+    url: '/login/logIn/'+username+'/'+password,
     method:'GET',
     success: function( result ) {
       if (result == "succeed"){
-		  window.location.href="index.html";
-        //$('#loginBox').html('<a href = "home.html">Login in!</a>');
+        // $('#loginBox').html('<a href = "home.html">Login in!</a>');
+        // alert('Success to login');
+        window.location='/home.html';
       }
       else{
         alert('Wrong information, try it again!')
@@ -21,25 +25,21 @@ function create(){
   let nusername = $('#username').val();
   let npassword1 = $('#password1').val();
   let npassword2 = $('#password2').val();
-  let newuser ={email:nemail, username:nusername,password1:npassword1,password2:npassword2}
-  let userobj = JSON.stringify(newuser);
-  $.ajax({
-    url: '/login/create/'+nusername+'/'+npassword1+'/'+nemail,
-    data: {newuser: userobj},
-    method: 'POST',
-    success: function(result) {
-      if (npassword1 != npassword2){
-        alert("Two entered passwords do not match!");
-      }else{
-          if (result == 'account created') {
-            alert('Account created!');
-          }
-          else {
-            alert('Username is taken, please try an another one!');
-          }
 
+  if(npassword1 != npassword2){
+    alert("Two passwords don't match");
+  }else{
+    $.ajax({
+      url: '/login/create/',
+      data:{
+        username: nusername,
+        email: nemail,
+        password: npassword1
+      },
+      method: 'POST',
+      success: function(result){
+        alert('user added!');
       }
-        
-    }
-})
+    });
+  }
 }

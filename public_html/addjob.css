@@ -1,0 +1,27 @@
+/* 
+Author: Aerror Li, Lingxiao Meng
+Class: CSC337 
+Purpose: This is addjob style css.
+ */
+ body {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding: 20px;
+    font-size: 20pt;
+   
+}
+.main{
+    background-color: rgb(236, 233, 233);
+    top:20%;
+    left:30%;
+    position: fixed;
+    height: 60%;
+    width: 40%;
+    text-align: center;
+}
+button {
+    font-size: 20pt;
+}
+
+input{
+    font-size: 20pt;
+}

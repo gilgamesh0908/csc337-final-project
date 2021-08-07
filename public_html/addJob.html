@@ -1,13 +1,19 @@
+<!--
+Author: Aerror Li, Lingxiao Meng
+Class: CSC337 
+Purpose: This is the web page, which used to add jobs in this web.
+-->
 <!DOCTYPE html>
  <html lang="en">
  <head>
-     <link rel="stylesheet" type="text/css" href="jobStyle.css">
+     <link rel="stylesheet" type="text/css" href="addJob.css">
      <script src="jquery.js"></script>
      <script src="addJob.js"></script>
      <title>Internal Website</title>
  </head>
  <body>
-    <h1>Add Job</h1>
+     <div class="main">
+        <h1>Add Job</h1>
     <label for="jTitle">Job title</label>
     <input id="jTitle" type="text"> </input>
     <br/><br/>
@@ -18,6 +24,8 @@
     <input id="area" type="text"> </input>
     <br/><br/>
     <button onclick="addJob()" >Add Job</button>
+     </div>
+    
     
 </body>
 </html>
