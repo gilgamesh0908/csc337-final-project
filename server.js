@@ -9,6 +9,9 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser'); //npm install cookie-parser
 const crypto = require('crypto');
 
+// const host = '198.199.85.146';
+// const port = 80;
+
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false })); 
@@ -283,15 +286,18 @@ app.post('/home/createResume', upload.single('file'), function(req, res, next) {
     var file = req.file;
 	let jobObj = req.body;
 	let username = req.cookies['username'];
-    console.log('here');
-    console.log(nameList[0]);
-	console.log(username);
+
 	if(nameList[0] == undefined){
 		res.send('login first');
 		return;
 	}
 	if(jobObj.name == ''){
         res.send('no name');
+        return;
+    }
+
+    if(file == undefined){
+        res.send('no photo');
         return;
     }
 	var r = mongoose.model('Resume', ResumeSchema);

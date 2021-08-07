@@ -101,6 +101,8 @@ function addPost(){
                 alert('Fail to update your resume');
             }else if (result == 'no name'){
                 alert('Please enter the name');
+            }else if(result == 'no photo'){
+                alert('Please upload the photo');
             }
             else{
                 alert('Success to update the resume');
