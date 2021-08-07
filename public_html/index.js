@@ -2,6 +2,8 @@ var searchResult = []
 
 function applyJob(){
 	var compName = $('#companyName').val(); //todo: get the certain comp name
+	console.log('here');
+	console.log(compName);
 	var title = $('#jobTitle').val();
 
 	$.ajax({
@@ -12,7 +14,12 @@ function applyJob(){
 			jobTitle: title
 		},
 		success: function(result){
-			alert('success to apply for the job');
+			if(result == 'yes'){
+				alert('Success to apply for the job!');
+			}else{
+				alert('Please log in first');
+			}
+			
 		}
 	});
 }
