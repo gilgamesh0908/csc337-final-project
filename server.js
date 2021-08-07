@@ -147,13 +147,20 @@ app.post('/job/searchByTitle/', (req, res) => {
 app.post('/job/apply', (req, res) => {
     let jobObj = req.body;
     console.log(jobObj);
+    req.params.username = nameList[0];
+    console.log(req.params.username);
+    if(req.params.username == undefined){
+        res.send("no");
+    }else{
+        res.send("yes");
+    }
     // var compName = req.params.comp;
     // console.log(compName);
     // var jobPos = req.params.pos;
     // console.log(compName);
     
-    var j = mongoose.model('Job', JobSchema);
-    var r = mongoose.model('Resume', ResumeSchema);
+    // var j = mongoose.model('Job', JobSchema);
+    // var r = mongoose.model('Resume', ResumeSchema);
     // j.find({compName: comp}).exec(function(error, results){
     //     if(results.length == 0){
     //         console.log("the user doesn't exist");
